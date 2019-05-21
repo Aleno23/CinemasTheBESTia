@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Peliculas.API
+namespace CinemasTheBESTia.Movies.API
 {
     public class Program
     {
