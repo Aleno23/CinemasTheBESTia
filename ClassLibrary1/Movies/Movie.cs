@@ -4,6 +4,7 @@ namespace CinemasTheBESTia.Entities.Movies
 {
     public class Movie
     {
+
         public double VoteAverage { get; set; }
 
         public string OriginalTitle { get; set; }
@@ -13,8 +14,12 @@ namespace CinemasTheBESTia.Entities.Movies
         public string Overview { get; set; }
 
         public DateTime ReleaseDate { get; set; }
+      
+        public string PosterPath { get; set; }
 
-        public string ImagePath { get; set; }
+        public string FullPosterPath { get; set; }
+
+        
 
     }
 }

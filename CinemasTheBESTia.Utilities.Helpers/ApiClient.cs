@@ -1,8 +1,11 @@
 ﻿using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CinemasTheBESTia.Utilities.Helpers
@@ -11,6 +14,10 @@ namespace CinemasTheBESTia.Utilities.Helpers
     {
         private readonly HttpClient _httpClient;
 
+        public ApiClient()
+        {
+            _httpClient = new HttpClient();
+        }
         public ApiClient(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -35,7 +42,21 @@ namespace CinemasTheBESTia.Utilities.Helpers
             response.EnsureSuccessStatusCode();
             var data = await response.Content.ReadAsStringAsync();
             var token = JObject.Parse(data).SelectToken(tokenName);
-            return JsonConvert.DeserializeObject<T>(token.ToString());
+            return JsonConvert.DeserializeObject<T>(token.ToString(), new JsonSerializerSettings() { ContractResolver = new UnderscorePropertyNamesContractResolver() });
         }
     }
+
+
+    public class UnderscorePropertyNamesContractResolver : DefaultContractResolver
+    {
+        public UnderscorePropertyNamesContractResolver() : base()
+        {
+        }
+
+        protected override string ResolvePropertyName(string propertyName)
+        {
+            return Regex.Replace(propertyName, @"(\w)([A-Z])", "$1_$2").ToLower();
+        }
+    }
+
 }

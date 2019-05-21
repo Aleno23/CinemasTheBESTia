@@ -1,0 +1,27 @@
+﻿@model CinemasTheBESTia.Web.MVC.ViewModels.MoviesViewModel
+
+
+<h2>Movies</h2>
+
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>Original Title</th>
+            <th>Original Language</th>
+            <th></th>
+
+        </tr>
+
+    </thead>
+    <tbody>
+        @foreach (var movie in Model.Movies)
+        {
+        <tr>
+            <td>@Html.ActionLink("Details", "Details", movie) </td>       
+            <td>@movie.OriginalTitle</td>
+            <td>@movie.OriginalLanguage</td>
+        </tr>
+        }
+    </tbody>
+</table>
+

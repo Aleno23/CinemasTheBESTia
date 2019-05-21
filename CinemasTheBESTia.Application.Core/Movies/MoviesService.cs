@@ -3,6 +3,7 @@ using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +22,10 @@ namespace CinemasTheBESTia.Application.Core.Movies
 
         public async Task<IEnumerable<Movie>> GetMovies()
         {
-            return await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(string.Format(_movieSettings.BaseUrl, _movieSettings.ServiceApiKey)), _movieSettings.TokenName);
+            var movies=  await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(string.Format(_movieSettings.BaseUrl, _movieSettings.ServiceApiKey)), _movieSettings.TokenName);
+            movies.ToList().ForEach(x => x.FullPosterPath = string.Format(_movieSettings.BaseUrlImage, x.PosterPath));
+            return movies;
+
         }
     }
 }

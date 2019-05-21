@@ -16,7 +16,6 @@ namespace CinemasTheBESTia.Movies.API
 {
     public class Startup
     {
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,7 +29,7 @@ namespace CinemasTheBESTia.Movies.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<IAPIClient, ApiClient>();
             services.AddTransient<IMoviesService, MoviesService>();
-            services.AddTransient(x=> Configuration.GetSection("Movies").Get<MovieSettings>());
+            services.AddTransient(x => Configuration.GetSection("Movies").Get<MovieSettings>());
 
             services.AddHttpClient<IAPIClient, ApiClient>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Set lifetime to five minutes
@@ -65,7 +64,7 @@ namespace CinemasTheBESTia.Movies.API
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
-                routes.MapRoute("default", "{controller=Peliculas}/{action=Get}/{id?}");
+                routes.MapRoute("default", "{controller=Movies}/{action=Get}/{id?}");
             });
         }
     }

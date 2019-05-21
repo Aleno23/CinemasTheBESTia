@@ -1,0 +1,54 @@
+﻿@model CinemasTheBESTia.Web.MVC.ViewModels.MovieDetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Movie</h4>
+    <hr />
+    <dl class="dl-horizontal clearfix">
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie.VoteAverage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Movie.VoteAverage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie.OriginalTitle)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Movie.OriginalTitle)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie.OriginalLanguage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Movie.OriginalLanguage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie.Overview)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Movie.Overview)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie.ReleaseDate)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Movie.ReleaseDate)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie.PosterPath)
+        </dt>
+        <dd>
+            <img class="img" src="@Url.Content(Model.Movie.FullPosterPath)" />
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>

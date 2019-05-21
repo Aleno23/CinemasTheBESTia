@@ -9,5 +9,7 @@ namespace CinemasTheBESTia.Entities
         public string BaseUrl { get; set; }
 
         public string TokenName { get; set; }
+
+        public string BaseUrlImage { get; set; }
     }
 }
