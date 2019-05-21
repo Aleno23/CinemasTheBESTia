@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemasTheBESTia.Utilities.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Entitites", "Entitites", "{E82257F6-8066-4A93-8BE0-20EE9FFC724A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemasTheBESTia.Entities", "ClassLibrary1\CinemasTheBESTia.Entities.csproj", "{87E09DE9-DE2D-433E-B1A2-7485C278E62A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemasTheBESTia.Entities", "CinemasTheBESTia.Entities\CinemasTheBESTia.Entities.csproj", "{87E09DE9-DE2D-433E-B1A2-7485C278E62A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{F8CC338C-FDB2-466F-8BFF-DED7FEC17535}"
 EndProject

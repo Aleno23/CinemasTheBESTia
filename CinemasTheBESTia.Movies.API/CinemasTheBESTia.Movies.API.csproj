@@ -16,9 +16,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CinemasTheBESTia.Application.Core\CinemasTheBESTia.Application.Core.csproj" />
+    <ProjectReference Include="..\CinemasTheBESTia.Entities\CinemasTheBESTia.Entities.csproj" />
     <ProjectReference Include="..\CinemasTheBESTia.Utilities.Abstractions\CinemasTheBESTia.Utilities.Abstractions.csproj" />
     <ProjectReference Include="..\CinemasTheBESTia.Utilities.Helpers\CinemasTheBESTia.Utilities.Helpers.csproj" />
-    <ProjectReference Include="..\ClassLibrary1\CinemasTheBESTia.Entities.csproj" />
   </ItemGroup>
 
 </Project>
