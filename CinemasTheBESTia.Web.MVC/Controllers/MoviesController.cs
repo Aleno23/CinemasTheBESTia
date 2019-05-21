@@ -25,11 +25,16 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
         // GET: Movies
         public async Task<ActionResult> Index()
         {
-            var movies = await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(_configuration["Movies:BaseUrl"]));
-            var viewModel = new MoviesViewModel
+            var viewModel = new MoviesViewModel();
+            try
             {
-                Movies = movies
-            };
+                var movies = await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(_configuration["Movies:BaseUrl"]));
+                viewModel.Movies = movies;
+            }
+            catch (Exception ex)
+            {
+
+            }
             return View(viewModel);
         }
 
