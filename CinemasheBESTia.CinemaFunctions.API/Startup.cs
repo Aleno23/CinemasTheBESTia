@@ -27,6 +27,16 @@ namespace CinemasTheBESTia.CinemaBooking.API
             services.AddDbContext<BookingDbContext>
                (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = Configuration["Auth:Url"];
+                    options.RequireHttpsMetadata = false;
+                    options.ApiName = Configuration["Auth:APIName"];
+                }
+                );
+
             services.AddTransient<ICinemasFunctionsService, CinemaFunctionsService>();
 
 
@@ -44,8 +54,12 @@ namespace CinemasTheBESTia.CinemaBooking.API
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Booking}/{action=Get}/{id?}");
+            });
             UpdateDatabase(app);
         }
 

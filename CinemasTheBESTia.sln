@@ -43,9 +43,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{E37BE8D5-4
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemasTheBESTia.Booking.Data.Context", "CinemasTheBESTia.CinemaFunctions.Data.Context\CinemasTheBESTia.Booking.Data.Context.csproj", "{0A33CCB0-FF4A-4658-9842-8F21441713D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CinemasTheBESTia.CinemaFunctions.Application.Core", "CinemasTheBESTia.Functions.Application.Core\CinemasTheBESTia.CinemaFunctions.Application.Core.csproj", "{24888B51-EEE8-4913-A631-68169A033630}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemasTheBESTia.CinemaFunctions.Application.Core", "CinemasTheBESTia.Functions.Application.Core\CinemasTheBESTia.CinemaFunctions.Application.Core.csproj", "{24888B51-EEE8-4913-A631-68169A033630}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Identity", "Identity", "{3E6E48EE-B882-435F-AF94-BDA276348772}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemasTheBESTia.IdentityServer", "CinemasTheBESTia.IdentityServer\CinemasTheBESTia.IdentityServer.csproj", "{F3433092-499F-4CBD-9D45-997F40826B90}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CinemasTheBESTia.IdentityServer.Data.Context", "CinemasTheBESTia.IdentityServer.Data.Context\CinemasTheBESTia.IdentityServer.Data.Context.csproj", "{E7BF1C97-94BA-47E9-973C-E7435BAD5550}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +93,14 @@ Global
 		{24888B51-EEE8-4913-A631-68169A033630}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24888B51-EEE8-4913-A631-68169A033630}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24888B51-EEE8-4913-A631-68169A033630}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3433092-499F-4CBD-9D45-997F40826B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3433092-499F-4CBD-9D45-997F40826B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3433092-499F-4CBD-9D45-997F40826B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3433092-499F-4CBD-9D45-997F40826B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7BF1C97-94BA-47E9-973C-E7435BAD5550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7BF1C97-94BA-47E9-973C-E7435BAD5550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7BF1C97-94BA-47E9-973C-E7435BAD5550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7BF1C97-94BA-47E9-973C-E7435BAD5550}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +122,8 @@ Global
 		{0A33CCB0-FF4A-4658-9842-8F21441713D3} = {E37BE8D5-4AAE-4F55-AB03-EEE9A800FB3C}
 		{24888B51-EEE8-4913-A631-68169A033630} = {690316CD-27E2-495F-BBE2-526A0FA5A276}
 		{3E6E48EE-B882-435F-AF94-BDA276348772} = {03DD98DA-E5E8-40FD-9399-648DDEB0C9E4}
+		{F3433092-499F-4CBD-9D45-997F40826B90} = {3E6E48EE-B882-435F-AF94-BDA276348772}
+		{E7BF1C97-94BA-47E9-973C-E7435BAD5550} = {E37BE8D5-4AAE-4F55-AB03-EEE9A800FB3C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {49D7A462-0207-4EFE-86F8-7CF5AEDB2DE7}

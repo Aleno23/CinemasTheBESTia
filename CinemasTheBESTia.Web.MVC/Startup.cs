@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using CinemasTheBESTia.Utilities.Helpers;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +30,46 @@ namespace CinemasTheBESTia.Web.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            services.AddAuthentication(opts =>
+            {
+                opts.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                opts.DefaultChallengeScheme = "oidc";
+            }).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddOpenIdConnect("oidc", options =>
+            {
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.Authority = Configuration["Auth:Url"];
+                options.RequireHttpsMetadata = false;
+                options.ClientId = Configuration["Auth:ClientId"];
+                options.ClientSecret = Configuration["Auth:SecretKey"];
+                options.ResponseType = "code id_token";
+
+                options.Scope.Add("CinemasTheBESTia.Web.MVC");
+
+                options.SaveTokens = true;
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.Events = new OpenIdConnectEvents
+                {
+                    OnUserInformationReceived = async context =>
+                    {
+                        List<Claim> claims = new List<Claim>();
+
+                        if (context.Properties.Items.ContainsKey(".Token.access_token"))
+                        {
+                            var token = context.Properties.Items[".Token.access_token"].ToString();
+                            claims.Add(new Claim("access_token", token));
+
+                            var id = context.Principal.Identity as ClaimsIdentity;
+                            id.AddClaims(claims);
+                        }
+                        await Task.FromResult(0);
+                    }
+                };
+
+            });
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -33,8 +77,8 @@ namespace CinemasTheBESTia.Web.MVC
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddTransient<IAPIClient, ApiClient>();          
-          
+            services.AddTransient<IAPIClient, ApiClient>();
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -51,7 +95,7 @@ namespace CinemasTheBESTia.Web.MVC
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
-
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();

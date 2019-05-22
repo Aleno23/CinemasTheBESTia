@@ -26,10 +26,20 @@ namespace CinemasTheBESTia.Movies.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddTransient<IAPIClient, ApiClient>();
             services.AddTransient<IMoviesService, MoviesService>();
             services.AddTransient(x => Configuration.GetSection("Movies").Get<MovieSettings>());
+
+            //services.AddAuthentication("Bearer")
+            // .AddIdentityServerAuthentication(options =>
+            // {
+            //     options.Authority = Configuration["Auth:Url"];
+            //     options.RequireHttpsMetadata = false;
+            //     options.ApiName = Configuration["Auth:APIName"];
+            // }
+            // );
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddHttpClient<IAPIClient, ApiClient>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Set lifetime to five minutes
@@ -60,7 +70,7 @@ namespace CinemasTheBESTia.Movies.API
             {
                 app.UseHsts();
             }
-
+           // app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {

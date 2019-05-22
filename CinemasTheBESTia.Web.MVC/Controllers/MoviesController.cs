@@ -5,12 +5,14 @@ using System.Threading.Tasks;
 using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using CinemasTheBESTia.Web.MVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace CinemasTheBESTia.Web.MVC.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly IAPIClient _apiClient;

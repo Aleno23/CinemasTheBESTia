@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemasTheBESTia.Movies.API.Controllers
