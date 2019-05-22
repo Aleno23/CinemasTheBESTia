@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using CinemasTheBESTia.Application.Core.Movies;
+using CinemasTheBESTia.Application.Movies.Core.Movies;
 using CinemasTheBESTia.Entities;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using CinemasTheBESTia.Utilities.Helpers;

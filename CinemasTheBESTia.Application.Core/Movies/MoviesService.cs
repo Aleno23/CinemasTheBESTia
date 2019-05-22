@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CinemasTheBESTia.Application.Core.Movies
+namespace CinemasTheBESTia.Application.Movies.Core.Movies
 {
     public class MoviesService : IMoviesService
     {
