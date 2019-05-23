@@ -1,0 +1,17 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+
+@*@if (Context.User.Identity.IsAuthenticated)*@
+@if (User.FindFirst(x => x.Type == "preferred_username") != null)
+{
+    <li>
+
+        <a asp-area="">Welcome <b>@User.FindFirst(x => x.Type == "preferred_username").Value</b></a>
+        <a asp-action="Logout" asp-controller="Auth" >Logout</a>
+
+
+
+    </li>
+
+    
+}

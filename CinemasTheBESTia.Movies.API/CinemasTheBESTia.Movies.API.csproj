@@ -9,16 +9,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="2.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="2.2.0" />
     <PackageReference Include="Polly.Extensions.Http" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CinemasTheBESTia.Application.Core\CinemasTheBESTia.Application.Core.csproj" />
+    <ProjectReference Include="..\CinemasTheBESTia.Application.Core\CinemasTheBESTia.Movies.Application.Core.csproj" />
+    <ProjectReference Include="..\CinemasTheBESTia.Entities\CinemasTheBESTia.Entities.csproj" />
     <ProjectReference Include="..\CinemasTheBESTia.Utilities.Abstractions\CinemasTheBESTia.Utilities.Abstractions.csproj" />
     <ProjectReference Include="..\CinemasTheBESTia.Utilities.Helpers\CinemasTheBESTia.Utilities.Helpers.csproj" />
-    <ProjectReference Include="..\ClassLibrary1\CinemasTheBESTia.Entities.csproj" />
   </ItemGroup>
 
 </Project>

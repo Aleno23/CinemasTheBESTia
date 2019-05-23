@@ -1,0 +1,90 @@
+﻿@model CinemasTheBESTia.Web.MVC.ViewModels.ReserverViewModel
+
+@{
+    ViewData["Title"] = "Booking";
+}
+
+<h2>Details</h2>
+@if (ViewContext.ModelState.IsValid == false)
+{
+    <div class="alert alert-danger">
+        <strong>Error</strong>
+        <div asp-validation-summary="All" class="danger"></div>
+    </div>
+}
+
+<div>
+    <h4>Movie @Model.OriginalMovieTitle</h4>
+    <hr />
+    @if (Model.AvailableSeats > 0)
+    {
+        <form  method="post">
+            <div class="col-md-2 ">
+                <label asp-for="AvailableSeats"></label>
+
+            </div>
+            <div class="col-md-2">
+                @Model.AvailableSeats
+
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-2 ">
+
+                    <label asp-for="NumberOfTickets"></label>
+                </div>
+
+
+                <div class="col-md-2">
+                    <input asp-for="NumberOfTickets" />
+                </div>
+
+                <div class="col-md-2 ">
+
+                    <label asp-for="PricePerTicket"></label>
+                </div>
+
+
+                <div class="col-md-2">
+                    @Model.PricePerTicket"
+                </div>
+                <div class="col-md-2 ">
+
+                    <label asp-for="TotalPrice"></label>
+                </div>
+
+
+                <div class="col-md-2">
+                    @Model.TotalPrice"
+                </div>
+
+
+
+                <input type="hidden" asp-for="AvailableSeats" />
+                <input type="hidden" asp-for="OriginalMovieTitle" />
+                <input type="hidden" asp-for="VoteAverage" />
+                <input type="hidden" asp-for="MovieId" />
+                <input type="hidden" asp-for="CinemaFunctionId" />
+
+                <div class="col-md-2">
+                    <button formmethod="post" asp-action="Reserver" asp-controller="Booking"
+                            class="btn btn-info" name="button" value="register">
+                        Pay
+                    </button>
+                </div>
+            </div>
+        </form>
+    }
+    else
+    {
+        <h1>There are not available tickets for the movie</h1>
+    }
+
+</div>
+<div>
+
+    <a asp-action="Details" asp-controller="Movies" asp-route-id="@Model.MovieId" >Back to Movie DetailsList</a>
+</div>
+<div>
+    <a asp-action="Index" asp-controller="Movies">Back to List</a>
+</div>

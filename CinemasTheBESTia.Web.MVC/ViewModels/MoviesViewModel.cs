@@ -8,6 +8,6 @@ namespace CinemasTheBESTia.Web.MVC.ViewModels
 {
     public class MoviesViewModel
     {
-        public IEnumerable<Movie> Movies { get; set; }
+        public IEnumerable<Movie> Movies { get; set; } = new List<Movie>();
     }
 }

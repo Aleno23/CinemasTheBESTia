@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CinemasTheBESTia.Entities.CinemaFunctions;
 using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using CinemasTheBESTia.Web.MVC.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
 namespace CinemasTheBESTia.Web.MVC.Controllers
 {
+    [Authorize]
     public class MoviesController : Controller
     {
         private readonly IAPIClient _apiClient;
@@ -23,85 +26,79 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
         }
 
         // GET: Movies
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
-            var movies = await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(_configuration["Movies:BaseUrl"]));
-            var viewModel = new MoviesViewModel
+            var viewModel = new MoviesViewModel();
+            try
             {
-                Movies = movies
-            };
+                var movies = await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(_configuration["Movies:BaseUrl"]));
+                viewModel.Movies = movies;
+            }
+            catch (Exception ex)
+            {
+
+            }
             return View(viewModel);
         }
 
 
         // GET: Movies/Details        
-
-        public ActionResult Details(Movie movie)
+        [HttpGet]
+        public async Task<ActionResult> Details(int id)
         {
-            return View(new MovieDetailViewModel() { Movie = movie });
+            Movie movie = await GetMovie(id);
+            IEnumerable<CinemaFunction> functions = await GetFunctions(movie.Id);
+            return View(new MovieDetailViewModel() { Movie = movie, CinemaFunctions = functions });
         }
 
-        // POST: Movies/Create
+        private async Task<Movie> GetMovie(int id)
+        {
+            return await _apiClient.GetAsync<Movie>(new Uri($"{_configuration["Movies:BaseUrl"]}{id}"));
+        }
+
+        private async Task<IEnumerable<CinemaFunction>> GetFunctions(int movieId)
+        {
+            return await _apiClient.GetAsync<IEnumerable<CinemaFunction>>(new Uri($"{_configuration["Booking:BaseUrl"]}{movieId}"));
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> GetSeats(MovieDetailViewModel movieDetailViewModel)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var seats = await _apiClient.GetAsync<int>(new Uri($"{_configuration["Booking:BaseUrl"]}ReturnSeats/{movieDetailViewModel.CinemaFunctionID}"));
+            var functions = await _apiClient.GetAsync<IEnumerable<CinemaFunction>>(new Uri($"{_configuration["Booking:BaseUrl"]}{movieDetailViewModel.Movie.Id}"));
+            var movie = await _apiClient.GetAsync<Movie>(new Uri($"{_configuration["Movies:BaseUrl"]}{movieDetailViewModel.Movie.Id}"));
+            var model = new MovieDetailViewModel() { Movie = movie, CinemaFunctions = functions, AvailableSeats = seats, CinemaFunctionID = movieDetailViewModel.CinemaFunctionID };
+            model.AvailableSeats = seats;
+            return View("Details", model);
         }
 
-        // GET: Movies/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Movies/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> CheckSeats(MovieDetailViewModel movieDetailViewModel)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
+                var seats = await _apiClient.GetAsync<int>(new Uri($"{_configuration["Booking:BaseUrl"]}ReturnSeats/{movieDetailViewModel.CinemaFunctionID}"));
+                movieDetailViewModel.AvailableSeats = seats;
+                return RedirectToAction("Index", "Booking", new
+                {
+                    @functionId = movieDetailViewModel.CinemaFunctionID,
+                    @movieId = movieDetailViewModel.Movie.Id,
+                    @movieTitle = movieDetailViewModel.Movie.OriginalTitle,
+                    @voteAverage = movieDetailViewModel.Movie.VoteAverage
+                
+                });
 
-                return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+
+            Movie movie = await GetMovie(movieDetailViewModel.Movie.Id);
+            movieDetailViewModel.CinemaFunctions = await GetFunctions(movieDetailViewModel.Movie.Id);
+            movieDetailViewModel.Movie = movie;
+            return View("Details", movieDetailViewModel);
+
         }
 
-        // GET: Movies/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Movies/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

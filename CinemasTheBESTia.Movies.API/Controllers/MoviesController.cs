@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemasTheBESTia.Movies.API.Controllers
@@ -28,9 +29,9 @@ namespace CinemasTheBESTia.Movies.API.Controllers
 
         // GET: api/Peliculas/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public async Task<Movie> Get(int id)
         {
-            return "value";
+            return await _movieService.GetMovie(id);
         }
 
         // POST: api/Peliculas

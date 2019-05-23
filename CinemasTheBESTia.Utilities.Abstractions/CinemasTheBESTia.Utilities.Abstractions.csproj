@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\CinemasTheBESTia.Entities.csproj" />
+    <ProjectReference Include="..\CinemasTheBESTia.Entities\CinemasTheBESTia.Entities.csproj" />
   </ItemGroup>
 
 </Project>
