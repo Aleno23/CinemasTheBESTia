@@ -4,6 +4,7 @@ namespace CinemasTheBESTia.Entities.Movies
 {
     public class Movie
     {
+        public int Id { get; set; }
 
         public double VoteAverage { get; set; }
 

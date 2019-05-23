@@ -20,9 +20,16 @@ namespace CinemasTheBESTia.Application.Movies.Core.Movies
             _apiClient = apiClient;
         }
 
+        public async Task<Movie> GetMovie(int id)
+        {
+            var movie = await _apiClient.GetAsyncWithUnderscoreProperyNames<Movie>(new Uri(string.Format(_movieSettings.BaseUrlDetails, id, _movieSettings.ServiceApiKey)));
+            movie.FullPosterPath = string.Format(_movieSettings.BaseUrlImage, movie.PosterPath);
+            return movie;
+        }
+
         public async Task<IEnumerable<Movie>> GetMovies()
         {
-            var movies=  await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(string.Format(_movieSettings.BaseUrl, _movieSettings.ServiceApiKey)), _movieSettings.TokenName);
+            var movies = await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(string.Format(_movieSettings.BaseUrl, _movieSettings.ServiceApiKey)), _movieSettings.TokenName);
             movies.ToList().ForEach(x => x.FullPosterPath = string.Format(_movieSettings.BaseUrlImage, x.PosterPath));
             return movies;
 

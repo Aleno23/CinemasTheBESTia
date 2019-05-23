@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace CinemasTheBESTia.Utilities.Abstractions.Interfaces
 {
-    public interface ICinemasFunctionsService
+    public interface ICinemasService
     {
-        Task<IEnumerable<CinemaFunction>> GetFuctions(string originalTitle);
+        Task<IEnumerable<CinemaFunction>> GetFuctions(int movieId);
+        int GetSeats(int functionId);
+        ReserveResultDTO ProcessReserve(ReserveDTO reserveDTO);
     }
 }

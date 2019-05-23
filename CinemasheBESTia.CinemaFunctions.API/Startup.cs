@@ -1,6 +1,10 @@
-﻿using CinemasTheBESTia.Booking.Data.Context;
-using CinemasTheBESTia.Functions.Application.Core;
+﻿using CinemasTheBESTia.Booking.Application.Core;
+using CinemasTheBESTia.Booking.Data.Context;
+using CinemasTheBESTia.Bookings.Application.Core;
+using CinemasTheBESTia.Entities.CinemaFunctions;
+using CinemasTheBESTia.Entities.Payment;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
+using CinemasTheBESTia.Utilities.Helpers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,18 +31,12 @@ namespace CinemasTheBESTia.CinemaBooking.API
             services.AddDbContext<BookingDbContext>
                (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient(x => Configuration.GetSection("CinemaFunctions").Get<CinemaFunctionsSettings>());
+            services.AddTransient(x => Configuration.GetSection("Payment").Get<PaymentSettings>());
 
-            services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
-                {
-                    options.Authority = Configuration["Auth:Url"];
-                    options.RequireHttpsMetadata = false;
-                    options.ApiName = Configuration["Auth:APIName"];
-                }
-                );
-
-            services.AddTransient<ICinemasFunctionsService, CinemaFunctionsService>();
-
+            services.AddTransient<IAPIClient, ApiClient>();
+            services.AddTransient<ICinemasService, CinemaService>();
+            services.AddTransient<IPaymentService, PaymentService>();
 
         }
 
@@ -54,7 +52,6 @@ namespace CinemasTheBESTia.CinemaBooking.API
                 app.UseHsts();
             }
 
-            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {

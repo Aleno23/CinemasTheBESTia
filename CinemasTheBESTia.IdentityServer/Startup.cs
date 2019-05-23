@@ -28,36 +28,43 @@ namespace CinemasTheBESTia.IdentityServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
 
             services.AddDbContext<IdentityServerDbContext>
              (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-           
-            services.AddIdentity<ApplicationUser, IdentityRole>(opt=>
-            {
 
+            services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
+            {
                 opt.Password.RequireDigit = false;
                 opt.Password.RequiredLength = 4;
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireUppercase = false;
-                opt.Password.RequireLowercase= false;
-            }
-            )
+                opt.Password.RequireLowercase = false;
+            })
                 .AddEntityFrameworkStores<IdentityServerDbContext>()
                 .AddDefaultTokenProviders();
 
 
             services.AddIdentityServer()
-                .AddDeveloperSigningCredential()
-                .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())
-                .AddInMemoryApiResources(IdentityConfig.GetApiResources())
-                .AddInMemoryClients(IdentityConfig.GetClients(Configuration))
-                .AddAspNetIdentity<ApplicationUser>();
+               .AddDeveloperSigningCredential()
+               .AddInMemoryIdentityResources(IdentityConfig.GetIdentityResources())
+               .AddInMemoryApiResources(IdentityConfig.GetApiResources())
+               .AddInMemoryClients(IdentityConfig.GetClients(Configuration))
+               .AddAspNetIdentity<ApplicationUser>();
+
+
+            //services.Configure<CookiePolicyOptions>(options =>
+            //{
+            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //    options.CheckConsentNeeded = context => true;
+            //    options.MinimumSameSitePolicy = SameSiteMode.None;
+            //});
+
+
+
+
+
+
+           
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -75,10 +82,9 @@ namespace CinemasTheBESTia.IdentityServer
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseCookiePolicy();
+            app.UseStaticFiles();          
             app.UseIdentityServer();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

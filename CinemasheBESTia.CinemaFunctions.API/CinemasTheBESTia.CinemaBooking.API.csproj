@@ -16,8 +16,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CinemasTheBESTia.CinemaFunctions.Data.Context\CinemasTheBESTia.Booking.Data.Context.csproj" />
-    <ProjectReference Include="..\CinemasTheBESTia.Functions.Application.Core\CinemasTheBESTia.CinemaFunctions.Application.Core.csproj" />
+    <ProjectReference Include="..\CinemasTheBESTia.Functions.Application.Core\CinemasTheBESTia.Booking.Application.Core.csproj" />
     <ProjectReference Include="..\CinemasTheBESTia.Utilities.Abstractions\CinemasTheBESTia.Utilities.Abstractions.csproj" />
+    <ProjectReference Include="..\CinemasTheBESTia.Utilities.Helpers\CinemasTheBESTia.Utilities.Helpers.csproj" />
   </ItemGroup>
 
 </Project>

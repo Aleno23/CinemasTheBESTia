@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CinemasTheBESTia.Entities.CinemaFunctions;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,47 +11,48 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CinemasTheBESTia.CinemaBooking.API.Controllers
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class BookingController : ControllerBase
     {
-        private readonly ICinemasFunctionsService _cinemaFunctionsService;
+        private readonly ICinemasService _cinemaFunctionsService;
 
-        public BookingController(ICinemasFunctionsService cinemaFuctionsService)
+        public BookingController(ICinemasService cinemaFuctionsService)
         {
             _cinemaFunctionsService = cinemaFuctionsService;
         }
 
         // GET api/originalTitle
-        [HttpGet("{originalTitle}")]
-        public async Task<IActionResult> Get(string originalTitle)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            if (string.IsNullOrWhiteSpace(originalTitle))
+            if (id < 1)
             {
                 return BadRequest();
             }
-            return Ok(await _cinemaFunctionsService.GetFuctions(originalTitle));
+            return Ok(await _cinemaFunctionsService.GetFuctions(id));
         }
 
 
+
+        [HttpGet("ReturnSeats/{functionId}")]
+        public IActionResult ReturnSeats(int functionId)
+        {
+            return Ok(_cinemaFunctionsService.GetSeats(functionId));
+        }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult ProcessReserve(ReserveDTO reserveDTO)
         {
+            if (reserveDTO== null )
+            {
+                return BadRequest();
+            }
+            return Ok(_cinemaFunctionsService.ProcessReserve(reserveDTO));
+
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

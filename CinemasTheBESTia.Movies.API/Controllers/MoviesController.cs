@@ -29,9 +29,9 @@ namespace CinemasTheBESTia.Movies.API.Controllers
 
         // GET: api/Peliculas/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public async Task<Movie> Get(int id)
         {
-            return "value";
+            return await _movieService.GetMovie(id);
         }
 
         // POST: api/Peliculas

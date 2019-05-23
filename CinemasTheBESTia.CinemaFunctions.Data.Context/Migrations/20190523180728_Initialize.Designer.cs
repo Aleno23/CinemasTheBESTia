@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemasTheBESTia.Booking.Data.Context.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    [Migration("20190522144802_initialize")]
-    partial class initialize
+    [Migration("20190523180728_Initialize")]
+    partial class Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,11 +27,13 @@ namespace CinemasTheBESTia.Booking.Data.Context.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("FunctionDate");
+                    b.Property<int>("AvailableSeats");
 
-                    b.Property<DateTime>("FunctionTime");
+                    b.Property<double>("BasePrice");
 
-                    b.Property<string>("OriginalMovieTitle");
+                    b.Property<DateTime>("FunctionDateTime");
+
+                    b.Property<int>("MovieId");
 
                     b.HasKey("CinemaFuctionId");
 

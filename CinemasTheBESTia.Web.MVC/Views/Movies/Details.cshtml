@@ -5,50 +5,96 @@
 }
 
 <h2>Details</h2>
+@if (ViewContext.ModelState.IsValid == false)
+{
+    <div class="alert alert-danger">
+        <strong>Error</strong>
+        <div asp-validation-summary="All" class="danger"></div>
+    </div>
+}
 
 <div>
     <h4>Movie</h4>
     <hr />
-    <dl class="dl-horizontal clearfix">
-        <dt>
-            @Html.DisplayNameFor(model => model.Movie.VoteAverage)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Movie.VoteAverage)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Movie.OriginalTitle)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Movie.OriginalTitle)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Movie.OriginalLanguage)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Movie.OriginalLanguage)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Movie.Overview)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Movie.Overview)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Movie.ReleaseDate)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Movie.ReleaseDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Movie.PosterPath)
-        </dt>
-        <dd>
-            <img class="img" src="@Url.Content(Model.Movie.FullPosterPath)" />
-        </dd>
-    </dl>
+    <form method="post" class="container">
+
+        <dl class="dl-horizontal clearfix">
+            <dt>
+                <label asp-for="Movie.VoteAverage"></label>
+            </dt>
+            <dd>
+                @Model.Movie.VoteAverage
+            </dd>
+            <dt>
+                <label asp-for="Movie.OriginalTitle"></label>
+            </dt>
+            <dd>
+                @Model.Movie.OriginalTitle
+            </dd>
+            <dt>
+                <label asp-for="Movie.OriginalLanguage"></label>
+            </dt>
+            <dd>
+                @Model.Movie.OriginalLanguage
+            </dd>
+            <dt>
+                <label asp-for="Movie.Overview"></label>
+            </dt>
+            <dd>
+                @Model.Movie.Overview
+            </dd>
+            <dt>
+                <label asp-for="Movie.ReleaseDate"></label>
+            </dt>
+            <dd>
+                @Model.Movie.ReleaseDate
+            </dd>
+            <dt>
+                <label asp-for="Movie.PosterPath"></label>
+            </dt>
+            <dd>
+                <img class=" img" src="@Url.Content(Model.Movie.FullPosterPath)" />
+            </dd>
+        </dl>
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-2">
+                <Label>Function Time:</Label>
+            </div>
+            <div class="col-md-2">
+                <input type="hidden" asp-for="Movie.Id" />
+                <input type="hidden" asp-for="Movie.OriginalTitle" />
+                <input type="hidden" asp-for="Movie.VoteAverage" />
+                <select asp-for="CinemaFunctionID" asp-items="@(new SelectList(Model.CinemaFunctions,"CinemaFuctionId", "FunctionDateTime"))">
+                    <option>Please select one</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+
+                <button asp-controller="Movies" formmethod="post" asp-action="CheckSeats"
+                        class="btn btn-info" name="button" value="seats">
+                    Check availability
+                </button>
+            </div>
+
+        </div>
+
+
+    </form>
+
 </div>
+
+
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script type="text/javascript">
+
+    function SelectedIndexChanged() {
+        //Form post
+        document.functionsForm.submit();
+    }
+</script>

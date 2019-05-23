@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemasTheBESTia.Booking.Data.Context.Migrations
 {
-    public partial class initialize : Migration
+    public partial class Initialize : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,9 +14,10 @@ namespace CinemasTheBESTia.Booking.Data.Context.Migrations
                 {
                     CinemaFuctionId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    OriginalMovieTitle = table.Column<string>(nullable: true),
-                    FunctionDate = table.Column<DateTime>(nullable: false),
-                    FunctionTime = table.Column<DateTime>(nullable: false)
+                    MovieId = table.Column<int>(nullable: false),
+                    FunctionDateTime = table.Column<DateTime>(nullable: false),
+                    BasePrice = table.Column<double>(nullable: false),
+                    AvailableSeats = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
