@@ -36,6 +36,7 @@ namespace CinemasTheBESTia.CinemaBooking.API
 
             services.AddTransient<IAPIClient, ApiClient>();
             services.AddTransient<ICinemasService, CinemaService>();
+            services.AddTransient<IBookingService, BookingService>();
             services.AddTransient<IPaymentService, PaymentService>();
 
         }

@@ -24,5 +24,8 @@ namespace CinemasTheBESTia.Entities.CinemaFunctions
         public DateTime CreateDate { get; set; }
 
         public bool IsActive { get; set; }
+
+        public string OriginalMovieTitle { get; set; }
+        
     }
 }

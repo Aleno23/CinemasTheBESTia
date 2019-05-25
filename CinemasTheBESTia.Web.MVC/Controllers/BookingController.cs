@@ -1,4 +1,5 @@
 ﻿using CinemasTheBESTia.Entities.CinemaFunctions;
+using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using CinemasTheBESTia.Web.MVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -24,50 +25,77 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
             _configuration = configuration;
         }
 
-        public ActionResult Index()
-        {
 
-            return View();
-        }
+        //[HttpPost]
+        //public async Task<ActionResult> Index(int functionId, int movieId, string movieTitle, double voteAverage, double basePrice)
+        //{
+        //    var seats = await GetAvailablesSeats(functionId);
+
+        //    var viewModel = new ReserverViewModel
+        //    {
+        //        MovieId = movieId,
+        //        AvailableSeats = seats,
+        //        OriginalMovieTitle = movieTitle,
+        //        VoteAverage = voteAverage,
+        //        CinemaFunctionId = functionId,
+        //        PricePerTicket = basePrice * voteAverage / 10
+        //    };
+
+        //    return View(viewModel);
+        //}
 
         [HttpGet]
-        public async Task<ActionResult> Index(int functionId, int movieId, string movieTitle, double voteAverage, double basePrice)
+        public async Task<ActionResult> Index(int movieId, int cinemaFunctionId)
         {
-            var seats = await GetAvailablesSeats(functionId);
 
-            var viewModel = new ReserverViewModel
+            var movie = await _apiClient.GetAsync<Movie>(new Uri($"{_configuration["Movies:BaseUrl"]}{movieId}"));
+            var cinemaFunction = await _apiClient.GetAsync<CinemaFunction>(new Uri($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodFunctionById"]}{cinemaFunctionId}"));
+            var viewModel = new BookingViewModel
             {
-                MovieId = movieId,
-                AvailableSeats = seats,
-                OriginalMovieTitle = movieTitle,
-                VoteAverage = voteAverage,
-                CinemaFunctionId = functionId,
-                PricePerTicket = basePrice * voteAverage / 10
+                AvailableSeats = cinemaFunction.AvailableSeats,
+                PricePerTicket = cinemaFunction.BasePrice * movie.VoteAverage / 10,
+                OriginalTitle = movie.OriginalTitle,
+                Id = movie.Id,
+                CinemaFuctionId = cinemaFunction.CinemaFuctionId
             };
-
             return View(viewModel);
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Reserver(ReserverViewModel reserverViewModel)
+        public ActionResult GoToPay(BookingViewModel reserverViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                reserverViewModel.TotalPrice = (double)reserverViewModel.NumberOfTickets * reserverViewModel.PricePerTicket;
+                return View("Payment", reserverViewModel);
+            }
+            return View("Index", reserverViewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Reserver(BookingViewModel reserverViewModel)
         {
             if (ModelState.IsValid)
             {
 
-                var result = await _apiClient.PostAsync<ReserveResultDTO>($"{_configuration["Booking:BaseUrl"]}",
+                var result = await _apiClient.PostAsync<ReserveResultDTO>($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodFunctions"]}",
                     new
                     {
-                        functionId = reserverViewModel.CinemaFunctionId,
-                        movieId = reserverViewModel.MovieId,
+                        functionId = reserverViewModel.CinemaFuctionId,
                         numberOfTickets = reserverViewModel.NumberOfTickets,
                         user = User.FindFirst(x => x.Type == "sub").Value,
+                        originalMovieTitle = reserverViewModel.OriginalTitle,
+                        total = reserverViewModel.TotalPrice
                     });
 
                 switch (result.MessageCode)
                 {
                     case 1:
-                        break;
+                        return RedirectToAction("Index", "Movies");
                     case -1:
                         ModelState.AddModelError("Error", "There are not seats available");
                         reserverViewModel.AvailableSeats = result.AvailableSeats;
@@ -80,7 +108,7 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
                         break;
                     default:
                         break;
-                }         
+                }
 
             }
             return View("Index", reserverViewModel);
@@ -88,7 +116,7 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
 
         private async Task<int> GetAvailablesSeats(int cinemaFunctionId)
         {
-            return await _apiClient.GetAsync<int>(new Uri($"{_configuration["Booking:BaseUrl"]}ReturnSeats/{cinemaFunctionId}"));
+            return await _apiClient.GetAsync<int>(new Uri($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodSeats"]}{cinemaFunctionId}"));
         }
     }
 }

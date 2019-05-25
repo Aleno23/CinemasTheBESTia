@@ -50,6 +50,8 @@ namespace CinemasTheBESTia.Booking.Data.Context.Migrations
 
                     b.Property<bool>("IsActive");
 
+                    b.Property<string>("OriginalMovieTitle");
+
                     b.Property<double>("TotalPaid");
 
                     b.Property<int>("TotalTickets");

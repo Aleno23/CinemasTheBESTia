@@ -23,7 +23,7 @@ namespace CinemasTheBESTia.Entities.CinemaFunctions
 
     public class ReserveDTO
     {
-        public int functionId { get; set; }
+        public int FunctionId { get; set; }
 
         public int MovieId { get; set; }
 
@@ -32,6 +32,10 @@ namespace CinemasTheBESTia.Entities.CinemaFunctions
         public int NumberOfTickets { get; set; }
 
         public double Total { get; set; }
+
+        public string OriginalMovieTitle { get; set; }
+
+        public double PricePerTicket { get; set; }
 
     }
 
@@ -42,6 +46,11 @@ namespace CinemasTheBESTia.Entities.CinemaFunctions
         public int MessageCode { get; set; }
 
         public int AvailableSeats { get; set; }
+    }
+
+    public class CancelDTO
+    {
+        public int id { get; set; }
 
     }
 }

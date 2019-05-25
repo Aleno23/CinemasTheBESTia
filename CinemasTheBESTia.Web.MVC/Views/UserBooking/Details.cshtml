@@ -1,0 +1,71 @@
+﻿@model CinemasTheBESTia.Entities.CinemaFunctions.CinemaReservation
+
+
+<h2>Details</h2>
+@if (ViewContext.ModelState.IsValid == false)
+{
+    <div class="alert alert-danger">
+        <strong>Error</strong>
+        <div asp-validation-summary="All" class="danger"></div>
+    </div>
+}
+<div>
+    <h4>Booking</h4>
+    <hr />
+    <form method="post" class="container">
+
+        <dl class="dl-horizontal clearfix">
+            <dt>
+                <label asp-for="OriginalMovieTitle"></label>
+            </dt>
+            <dd>
+                @Model.OriginalMovieTitle
+            </dd>
+            <dt>
+                <label >Refund</label>
+            </dt>
+            <dd>
+                @Model.TotalPaid
+            </dd>
+            <dt>
+                <label asp-for="TotalTickets"></label>
+            </dt>
+            <dd>
+                @Model.TotalTickets
+            </dd>
+            <dt>
+                <label asp-for="CinemaFunction.FunctionDateTime"></label>
+            </dt>
+            <dd>
+                @Model.CinemaFunction.FunctionDateTime
+            </dd>
+        </dl>
+
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-2">
+                <Label>Do you want to cancel?</Label>
+            </div>
+            <div class="col-md-2">
+
+                <button formmethod="post" asp-action="Cancel" asp-route-id="@Model.Id"
+                        class="btn btn-danger" name="button">
+                    Yes
+                </button>
+              
+                <a formmethod="post" asp-action="Index"
+                   class="btn btn-info" name="button">
+                    No
+                </a>
+            </div>
+        </div>
+
+
+    </form>
+
+</div>
+
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

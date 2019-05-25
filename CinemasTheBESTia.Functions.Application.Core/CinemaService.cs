@@ -13,14 +13,13 @@ namespace CinemasTheBESTia.Bookings.Application.Core
     {
         private readonly BookingDbContext _context;
         private readonly CinemaFunctionsSettings _cinemaFunctionsSettings;
-        private readonly IPaymentService _paymentService;
+
         private static object _threadSafe = new object();
 
-        public CinemaService(BookingDbContext context, CinemaFunctionsSettings cinemaFunctionsSettings, IPaymentService paymentService)
+        public CinemaService(BookingDbContext context, CinemaFunctionsSettings cinemaFunctionsSettings)
         {
             _context = context;
             _cinemaFunctionsSettings = cinemaFunctionsSettings;
-            _paymentService = paymentService;
         }
 
         public async Task<IEnumerable<CinemaFunction>> GetFuctions(int movieId)
@@ -74,53 +73,12 @@ namespace CinemasTheBESTia.Bookings.Application.Core
 
         }
 
-        public ReserveResultDTO ProcessReserve(ReserveDTO reserveDTO)
+
+        public async Task<CinemaFunction> GetCinemaFunctionById(int id)
         {
-            var result = new ReserveResultDTO();
-            try
-            {
-
-                lock (_threadSafe)
-                {
-                    var availableSeats = _context.CinemaFunctions.First(x => x.CinemaFuctionId == reserveDTO.functionId).AvailableSeats;
-                    if (availableSeats < reserveDTO.NumberOfTickets)
-                    {
-                        result.Message = "NO SEATS";
-                        result.AvailableSeats = availableSeats;
-                        result.MessageCode = -1;
-                        return result;
-                    }
-
-                    var paymentResult = _paymentService.Pay(reserveDTO.User, reserveDTO.NumberOfTickets);
-                    if (paymentResult.Equals("OK"))
-                    {
-                        var cinemaReservation = new CinemaReservation();
-                        cinemaReservation.CinemaFunctionId = reserveDTO.functionId;
-                        cinemaReservation.CreateDate = DateTime.Now;
-                        cinemaReservation.IsActive = true;
-                        cinemaReservation.TotalPaid = reserveDTO.Total;
-                        cinemaReservation.TotalTickets = reserveDTO.NumberOfTickets;
-                        cinemaReservation.User = reserveDTO.User;
-                        _context.CinemaReservations.Add(cinemaReservation);
-                        var cinemaFunction = _context.CinemaFunctions.First(x => x.CinemaFuctionId == reserveDTO.functionId);
-                        cinemaFunction.AvailableSeats -= reserveDTO.NumberOfTickets;
-                        _context.SaveChanges();
-                        result.MessageCode = 1;
-                        result.Message = "OK";
-                        return result;
-                    }
-                    result.MessageCode = -2;
-                    result.Message = "PAYMENT SERVICE ERROR";
-                    return result;
-                }
-            }
-            catch (Exception ex)
-            {
-                result.MessageCode = -3;
-                result.Message = "SYSTEM ERROR";
-                return result;
-            }
-
+            return await _context.CinemaFunctions
+                .FirstOrDefaultAsync(x => x.CinemaFuctionId == id);
         }
+
     }
 }

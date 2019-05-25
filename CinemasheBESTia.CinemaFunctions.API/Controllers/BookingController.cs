@@ -17,10 +17,12 @@ namespace CinemasTheBESTia.CinemaBooking.API.Controllers
     public class BookingController : ControllerBase
     {
         private readonly ICinemasService _cinemaFunctionsService;
+        private readonly IBookingService _bookingService;
 
-        public BookingController(ICinemasService cinemaFuctionsService)
+        public BookingController(ICinemasService cinemaFuctionsService, IBookingService bookingService)
         {
             _cinemaFunctionsService = cinemaFuctionsService;
+            _bookingService = bookingService;
         }
 
         // GET api/originalTitle
@@ -46,13 +48,24 @@ namespace CinemasTheBESTia.CinemaBooking.API.Controllers
         [HttpPost]
         public IActionResult ProcessReserve(ReserveDTO reserveDTO)
         {
-            if (reserveDTO== null )
+            if (reserveDTO == null)
             {
                 return BadRequest();
             }
-            return Ok(_cinemaFunctionsService.ProcessReserve(reserveDTO));
+            return Ok(_bookingService.ProcessBooking(reserveDTO));
 
         }
+
+        [HttpGet("CinemaFunction/{cinemafunctionId}")]
+        public async Task<IActionResult> CinemaFunction(int cinemafunctionId)
+        {
+            if (cinemafunctionId < 0)
+            {
+                return BadRequest();
+            }
+            return Ok(await _cinemaFunctionsService.GetCinemaFunctionById(cinemafunctionId));
+        }
+
 
     }
 }

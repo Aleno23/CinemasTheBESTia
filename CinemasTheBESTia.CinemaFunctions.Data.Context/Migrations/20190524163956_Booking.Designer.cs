@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemasTheBESTia.Booking.Data.Context.Migrations
 {
     [DbContext(typeof(BookingDbContext))]
-    [Migration("20190523193036_AddCinemaReservations")]
-    partial class AddCinemaReservations
+    [Migration("20190524163956_Booking")]
+    partial class Booking
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,6 +51,8 @@ namespace CinemasTheBESTia.Booking.Data.Context.Migrations
                     b.Property<DateTime>("CreateDate");
 
                     b.Property<bool>("IsActive");
+
+                    b.Property<string>("OriginalMovieTitle");
 
                     b.Property<double>("TotalPaid");
 

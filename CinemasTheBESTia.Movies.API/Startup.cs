@@ -58,7 +58,8 @@ namespace CinemasTheBESTia.Movies.API
                 .OrTransientHttpStatusCode()
                 .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound
                 || msg.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+                .WaitAndRetryAsync(3, retryAttempt => 
+                                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
                                 + TimeSpan.FromMilliseconds(jitterer.Next(0, 100)));
 
         }

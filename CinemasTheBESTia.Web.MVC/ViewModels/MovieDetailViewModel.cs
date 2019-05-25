@@ -19,8 +19,9 @@ namespace CinemasTheBESTia.Web.MVC.ViewModels
 
         public int AvailableSeats { get; set; }
 
-        
-        public int NumberOfTickets { get; set; }
+        [Required]
+        [Range(1, 10)]
+        public int? NumberOfTickets { get; set; }
 
 
     }

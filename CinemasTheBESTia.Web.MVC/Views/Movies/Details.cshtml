@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "Details";
 }
-
-<h2>Details</h2>
 @if (ViewContext.ModelState.IsValid == false)
 {
     <div class="alert alert-danger">
@@ -14,20 +12,19 @@
 }
 
 <div>
-    <h4>Movie</h4>
-    <hr />
     <form method="post" class="container">
-
+        <br />
         <dl class="dl-horizontal clearfix">
+            <dt>
+                <label asp-for="Movie.OriginalTitle"></label>
+            </dt>
             <dt>
                 <label asp-for="Movie.VoteAverage"></label>
             </dt>
             <dd>
                 @Model.Movie.VoteAverage
             </dd>
-            <dt>
-                <label asp-for="Movie.OriginalTitle"></label>
-            </dt>
+
             <dd>
                 @Model.Movie.OriginalTitle
             </dd>
@@ -59,28 +56,49 @@
 
         <div class="clearfix"></div>
         <div class="row">
-            <div class="col-md-2">
-                <Label>Function Time:</Label>
-            </div>
-            <div class="col-md-2">
-                <input type="hidden" asp-for="Movie.Id" />
-                <input type="hidden" asp-for="Movie.OriginalTitle" />
-                <input type="hidden" asp-for="Movie.VoteAverage" />
-                <select asp-for="CinemaFunctionID" asp-items="@(new SelectList(Model.CinemaFunctions,"CinemaFuctionId", "FunctionDateTime"))">
-                    <option>Please select one</option>
-                </select>
-            </div>
-            <div class="col-md-2">
+            <div class="col-md-6">
 
-                <button asp-controller="Movies" formmethod="post" asp-action="CheckSeats"
-                        class="btn btn-info" name="button" value="seats">
-                    Check availability
-                </button>
+                <table class="table table-sm table-bordered table-hover">
+                    <thead>
+                        <tr>
+
+                            <th>FunctionDateTime</th>
+                            <th>AvailableSeats</th>
+                            <th>Number of tickets</th>
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach (var cinemaFunction in Model.CinemaFunctions)
+                        {
+                            bool disponibility = cinemaFunction.AvailableSeats > 0;
+
+                            <tr class="@(disponibility ? "success": "danger" )">
+                                <td>@cinemaFunction.FunctionDateTime</td>
+                                <td>@cinemaFunction.AvailableSeats</td>
+
+                                @if (cinemaFunction.AvailableSeats > 0)
+                                {
+                                    <td>
+                                        <a asp-action="Index" asp-controller="Booking"
+                                           asp-route-movieId="@Model.Movie.Id"
+                                           asp-route-cinemaFunctionId="@cinemaFunction.CinemaFuctionId">
+                                            Buy Tickets
+                                        </a>
+
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>Out of sale</td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
 
         </div>
-
-
     </form>
 
 </div>
@@ -90,11 +108,3 @@
 
     <a asp-action="Index">Back to List</a>
 </div>
-
-<script type="text/javascript">
-
-    function SelectedIndexChanged() {
-        //Form post
-        document.functionsForm.submit();
-    }
-</script>

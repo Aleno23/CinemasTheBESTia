@@ -10,6 +10,6 @@ namespace CinemasTheBESTia.Utilities.Abstractions.Interfaces
     {
         Task<IEnumerable<CinemaFunction>> GetFuctions(int movieId);
         int GetSeats(int functionId);
-        ReserveResultDTO ProcessReserve(ReserveDTO reserveDTO);
+        Task<CinemaFunction> GetCinemaFunctionById(int id);
     }
 }
