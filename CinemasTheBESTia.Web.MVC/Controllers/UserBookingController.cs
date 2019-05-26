@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Entities.CinemaFunctions;
-using CinemasTheBESTia.Entities.Movies;
+using CinemasTheBESTia.Entities.DTOs;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using CinemasTheBESTia.Web.MVC.Models;
-using CinemasTheBESTia.Web.MVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -56,7 +53,7 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
         [HttpPost]
         public async Task<ActionResult> Cancel(int id)
         {
-            var result = await _apiClient.PostAsync<bool>($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodBooking"]}", new CancelDTO { id = id });
+            var result = await _apiClient.PostAsync<bool>($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodBooking"]}", new CancelDTO { Id = id });
 
             if (result)
             {

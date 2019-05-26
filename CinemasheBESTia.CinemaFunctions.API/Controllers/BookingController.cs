@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Entities.CinemaFunctions;
+using CinemasTheBESTia.Entities.DTOs;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,10 @@ namespace CinemasTheBESTia.CinemaBooking.API.Controllers
         [HttpGet("ReturnSeats/{functionId}")]
         public IActionResult ReturnSeats(int functionId)
         {
+            if (functionId < 1)
+            {
+                return BadRequest();
+            }
             return Ok(_cinemaFunctionsService.GetSeats(functionId));
         }
 
@@ -65,7 +70,5 @@ namespace CinemasTheBESTia.CinemaBooking.API.Controllers
             }
             return Ok(await _cinemaFunctionsService.GetCinemaFunctionById(cinemafunctionId));
         }
-
-
     }
 }

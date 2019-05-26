@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -77,8 +75,11 @@ namespace CinemasTheBESTia.Web.MVC
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddTransient<IAPIClient, ApiClient>();
+            services.AddTransient<IPolicyManager, PolicyManager>();
 
+            services.AddHttpClient<IAPIClient, ApiClient>()
+              .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Set lifetime to five minutes
+              .AddPolicyHandler(PolicyManager.GetRetryPolicy());
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

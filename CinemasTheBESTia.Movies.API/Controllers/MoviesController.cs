@@ -55,25 +55,6 @@ namespace CinemasTheBESTia.Movies.API.Controllers
         public async Task<Movie> Get(int id)
         {
             return await _movieService.GetMovie(id);
-        }
-
-        // POST: api/Peliculas
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Peliculas/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
-
+        }   
     }
 }

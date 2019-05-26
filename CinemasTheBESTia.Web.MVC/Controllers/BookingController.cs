@@ -1,4 +1,5 @@
 ﻿using CinemasTheBESTia.Entities.CinemaFunctions;
+using CinemasTheBESTia.Entities.DTOs;
 using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using CinemasTheBESTia.Web.MVC.ViewModels;
@@ -6,8 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CinemasTheBESTia.Web.MVC.Controllers
@@ -24,25 +23,6 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
             _apiClient = apiClient;
             _configuration = configuration;
         }
-
-
-        //[HttpPost]
-        //public async Task<ActionResult> Index(int functionId, int movieId, string movieTitle, double voteAverage, double basePrice)
-        //{
-        //    var seats = await GetAvailablesSeats(functionId);
-
-        //    var viewModel = new ReserverViewModel
-        //    {
-        //        MovieId = movieId,
-        //        AvailableSeats = seats,
-        //        OriginalMovieTitle = movieTitle,
-        //        VoteAverage = voteAverage,
-        //        CinemaFunctionId = functionId,
-        //        PricePerTicket = basePrice * voteAverage / 10
-        //    };
-
-        //    return View(viewModel);
-        //}
 
         [HttpGet]
         public async Task<ActionResult> Index(int movieId, int cinemaFunctionId)
@@ -61,7 +41,6 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
             return View(viewModel);
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult GoToPay(BookingViewModel reserverViewModel)
@@ -73,7 +52,6 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
             }
             return View("Index", reserverViewModel);
         }
-
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -109,7 +87,6 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
                     default:
                         break;
                 }
-
             }
             return View("Index", reserverViewModel);
         }

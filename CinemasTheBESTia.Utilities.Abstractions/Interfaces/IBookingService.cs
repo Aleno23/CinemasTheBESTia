@@ -1,4 +1,5 @@
 ﻿using CinemasTheBESTia.Entities.CinemaFunctions;
+using CinemasTheBESTia.Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;

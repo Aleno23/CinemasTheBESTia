@@ -9,7 +9,7 @@ namespace CinemasTheBESTia.Utilities.Abstractions.Interfaces
     {
         string Get(Uri requestUrl);
         Task<T> GetAsync<T>(Uri requestUrl);
-        Task<T> GetAsyncWithUnderscoreProperyNames<T>(Uri requestUrl);
+        Task<T> GetAsyncWithUnderscorePropertyNames<T>(Uri requestUrl);
         Task<T> GetAsync<T>(Uri requestUrl, string tokenName);
         Task<T> PostAsync<T>(string requestUrl, object dataToSend);
     }

@@ -1,14 +1,6 @@
 using CinemasTheBESTia.Entities;
-using CinemasTheBESTia.Entities.Movies;
-using CinemasTheBESTia.Movies.API.Controllers;
-using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -34,12 +26,10 @@ namespace CinemasTheBESTia.Movies.API.Tests
             };
         }
 
-        IMemoryCache memoryCache;
-
         [Theory]
         [InlineData("5275b13e4f70d9f311513521b5f2c89f")]
         [InlineData("9275b13e4f70d9f311513521b5f2c89f")]
-        public async Task Test1(string serviceApiKey)
+        public async Task WhenGetMoviesThenResponseIsNotNull(string serviceApiKey)
         {
             var client = _factory.WithWebHostBuilder(builder =>
             {
@@ -50,7 +40,7 @@ namespace CinemasTheBESTia.Movies.API.Tests
                 });
             }).CreateClient();
 
-                      // The endpoint or route of the controller action.
+            // The endpoint or route of the controller action.
             var httpResponse = await client.GetAsync("/api/movies");
 
             // Must be successful.
@@ -59,7 +49,7 @@ namespace CinemasTheBESTia.Movies.API.Tests
             // Deserialize and examine results.
             var stringResponse = await httpResponse.Content.ReadAsStringAsync();
 
-
+            Assert.True(!string.IsNullOrWhiteSpace(stringResponse));
 
         }
 

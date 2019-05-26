@@ -6,7 +6,6 @@ namespace CinemasTheBESTia.Utilities.Abstractions.Interfaces
 {
     public interface IPaymentService
     {
-
         string Pay(string user, double total);
     }
 }

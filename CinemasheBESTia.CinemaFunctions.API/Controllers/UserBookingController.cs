@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Entities.CinemaFunctions;
+using CinemasTheBESTia.Entities.DTOs;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ namespace CinemasTheBESTia.CinemaBooking.API.Controllers
         [HttpGet("Detail/{id}")]
         public async Task<ActionResult> Detail(int id)
         {
-            if (id < 0 )
+            if (id < 0)
             {
                 return BadRequest();
             }
@@ -49,7 +50,7 @@ namespace CinemasTheBESTia.CinemaBooking.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Cancel(CancelDTO cancelDTO)
         {
-            if (cancelDTO.id < 0)
+            if (cancelDTO.Id < 0)
             {
                 return BadRequest();
             }

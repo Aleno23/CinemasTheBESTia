@@ -1,6 +1,5 @@
 ﻿using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -41,7 +40,7 @@ namespace CinemasTheBESTia.Utilities.Helpers
             return data;
         }
 
-        public async Task<T> GetAsyncWithUnderscoreProperyNames<T>(Uri requestUrl)
+        public async Task<T> GetAsyncWithUnderscorePropertyNames<T>(Uri requestUrl)
         {
             var response = await _httpClient.GetAsync(requestUrl, HttpCompletionOption.ResponseHeadersRead);
             response.EnsureSuccessStatusCode();

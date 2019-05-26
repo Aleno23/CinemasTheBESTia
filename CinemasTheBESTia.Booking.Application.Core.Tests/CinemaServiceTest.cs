@@ -10,14 +10,14 @@ using Xunit;
 
 namespace CinemasTheBESTia.Booking.Application.Core.Tests
 {
-         
+
     public class CinemaServiceTest
     {
         private BookingDbContext _context;
 
         private CinemaService _cinemaService;
 
-     
+
         private CinemaFunctionsSettings _cinemaFunctionsSettings;
 
         public CinemaServiceTest()
@@ -54,28 +54,5 @@ namespace CinemasTheBESTia.Booking.Application.Core.Tests
             Assert.True(result == 5);
         }
 
-
-        //[Theory]
-        //[InlineData("OK", 1001, 5, 10, -1)]
-        //[InlineData("OK", 2001, 10, 5, 1)]
-        //[InlineData("FAIL", 2002, 10, 5, -2)]
-        //[InlineData("EXCEPTION", 2003, 10, 5, -3)]
-        //public void WhenProcessReserveThenReturnExpectedResult(string user, int functionId, int availableSeats, int numberOfTickets, int expectedResult)
-        //{
-        //    _context.CinemaFunctions.Add(new CinemaFunction() { CinemaFuctionId = functionId, BasePrice = 1000, AvailableSeats = availableSeats, MovieId = 1 });
-        //    _context.SaveChanges();
-
-        //    var reserveDTO = new ReserveDTO
-        //    {
-        //        functionId = functionId,
-        //        MovieId = 1,
-        //        NumberOfTickets = numberOfTickets,
-        //        Total = 3000,
-        //        User = user
-        //    };
-        //    var result = _cinemaService.ProcessReserve(reserveDTO);
-
-        //    Assert.True(result.MessageCode == expectedResult);
-        //}
     }
 }

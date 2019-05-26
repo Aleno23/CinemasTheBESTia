@@ -18,9 +18,7 @@ namespace CinemasTheBESTia.Entities.Movies
       
         public string PosterPath { get; set; }
 
-        public string FullPosterPath { get; set; }
-
-        
+        public string FullPosterPath { get; set; }       
 
     }
 }

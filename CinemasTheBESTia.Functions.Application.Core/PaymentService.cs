@@ -1,8 +1,6 @@
 ﻿using CinemasTheBESTia.Entities.Payment;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CinemasTheBESTia.Booking.Application.Core
 {

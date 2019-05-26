@@ -1,6 +1,5 @@
 ﻿using CinemasTheBESTia.Application.Movies.Core.Movies;
 using CinemasTheBESTia.Entities;
-using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using CinemasTheBESTia.Utilities.Helpers;
 using Microsoft.AspNetCore.Builder;
@@ -9,13 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Polly;
-using Polly.Extensions.Http;
 using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Formatting;
 
 namespace CinemasTheBESTia.Movies.API
 {
@@ -39,32 +32,9 @@ namespace CinemasTheBESTia.Movies.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddHttpClient<IAPIClient, ApiClient>()
             .SetHandlerLifetime(TimeSpan.FromMinutes(5))  //Set lifetime to five minutes
-            .AddPolicyHandler(GetRetryPolicy());
-            
-
-
+            .AddPolicyHandler(PolicyManager.GetRetryPolicy());
             services.AddMemoryCache();
-
         }
-
-
-        static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-        {
-            Random jitterer = new Random();
-
-            return HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrTransientHttpError()
-                .OrTransientHttpStatusCode()
-                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound
-                || msg.StatusCode == System.Net.HttpStatusCode.InternalServerError)
-                .WaitAndRetryAsync(3, retryAttempt => 
-                                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
-                                + TimeSpan.FromMilliseconds(jitterer.Next(0, 100)));
-
-        }
-
-       
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

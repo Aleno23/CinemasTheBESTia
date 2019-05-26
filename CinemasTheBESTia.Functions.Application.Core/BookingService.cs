@@ -1,5 +1,6 @@
 ﻿using CinemasTheBESTia.Booking.Data.Context;
 using CinemasTheBESTia.Entities.CinemaFunctions;
+using CinemasTheBESTia.Entities.DTOs;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -65,11 +66,11 @@ namespace CinemasTheBESTia.Bookings.Application.Core
             }
             catch (Exception ex)
             {
+                //Here we can log the exception
                 result.MessageCode = -3;
                 result.Message = "SYSTEM ERROR";
                 return result;
             }
-
         }
 
         public async Task<IEnumerable<CinemaReservation>> GetBookingByUser(object user)
@@ -80,13 +81,20 @@ namespace CinemasTheBESTia.Bookings.Application.Core
 
         public async Task<bool> CancelBooking(CancelDTO cancelDTO)
         {
-            var booking = _context.CinemaReservations.FirstOrDefault(x => x.Id == cancelDTO.id);
-            if (booking == null) return false;
-            booking.IsActive = false;
-            var function = _context.CinemaFunctions.FirstOrDefault(x => x.CinemaFuctionId == booking.CinemaFunctionId);
-            function.AvailableSeats += booking.TotalTickets;
-            await _context.SaveChangesAsync();
-            return true;
+            try
+            {
+                var booking = _context.CinemaReservations.FirstOrDefault(x => x.Id == cancelDTO.Id);
+                if (booking == null) return false;
+                booking.IsActive = false;
+                var function = _context.CinemaFunctions.FirstOrDefault(x => x.CinemaFuctionId == booking.CinemaFunctionId);
+                function.AvailableSeats += booking.TotalTickets;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex) 
+            {
+                return false;
+            }
         }
 
         public async Task<CinemaReservation> GetBookingById(int id)

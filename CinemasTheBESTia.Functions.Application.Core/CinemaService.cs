@@ -13,7 +13,6 @@ namespace CinemasTheBESTia.Bookings.Application.Core
     {
         private readonly BookingDbContext _context;
         private readonly CinemaFunctionsSettings _cinemaFunctionsSettings;
-
         private static object _threadSafe = new object();
 
         public CinemaService(BookingDbContext context, CinemaFunctionsSettings cinemaFunctionsSettings)
@@ -24,14 +23,22 @@ namespace CinemasTheBESTia.Bookings.Application.Core
 
         public async Task<IEnumerable<CinemaFunction>> GetFuctions(int movieId)
         {
-            lock (_threadSafe)
+            try
             {
-                if (!_context.CinemaFunctions.Any(x => x.MovieId == movieId && x.FunctionDateTime > DateTime.Now))
+                lock (_threadSafe)
                 {
-                    SeedFuctions(movieId);
+                    if (!_context.CinemaFunctions.Any(x => x.MovieId == movieId && x.FunctionDateTime > DateTime.Now))
+                    {
+                        SeedFuctions(movieId);
+                    }
                 }
+                return await _context.CinemaFunctions.Where(x => x.MovieId == movieId && x.FunctionDateTime > DateTime.Now).ToListAsync();
+
             }
-            return await _context.CinemaFunctions.Where(x => x.MovieId == movieId && x.FunctionDateTime > DateTime.Now).ToListAsync();
+            catch (Exception ex)
+            {
+                return new List<CinemaFunction>();
+            }
         }
 
         private void SeedFuctions(int movieId)
@@ -70,7 +77,6 @@ namespace CinemasTheBESTia.Bookings.Application.Core
         public int GetSeats(int functionId)
         {
             return _context.CinemaFunctions.First(x => x.CinemaFuctionId == functionId).AvailableSeats;
-
         }
 
 

@@ -1,5 +1,6 @@
 ﻿using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using Polly;
+using Polly.Extensions.Http;
 using Polly.Fallback;
 using Polly.Wrap;
 using System;
@@ -14,6 +15,7 @@ namespace CinemasTheBESTia.Utilities.Helpers
 {
     public class PolicyManager : IPolicyManager
     {
+        private const int NUMBER_OF_RETRIES = 3;
 
         public Task<T> GetFallbackPolicy<T>(Func<CancellationToken, Task<T>> fallBackAction, Func<Task<T>> action)
         {
@@ -21,6 +23,22 @@ namespace CinemasTheBESTia.Utilities.Helpers
                 .Handle<Exception>()
                  .FallbackAsync(fallBackAction)
                  .ExecuteAsync(action);
+        }
+
+        public static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            Random jitterer = new Random();
+
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrTransientHttpError()
+                .OrTransientHttpStatusCode()
+                .OrResult(msg => msg.StatusCode == HttpStatusCode.NotFound
+                || msg.StatusCode == HttpStatusCode.InternalServerError)
+                .WaitAndRetryAsync(NUMBER_OF_RETRIES, retryAttempt =>
+                                TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
+                                + TimeSpan.FromMilliseconds(jitterer.Next(0, 100)));
+
         }
 
     }
