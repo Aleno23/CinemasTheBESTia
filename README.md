@@ -20,7 +20,7 @@ Reemplazando {server}, {user} y password.
 ### Consideraciones
 
   - Se consumió el API https://api.themoviedb.org/3/movie/{0}?api_key={1} para obtener los detalles de la pelicula
-  - Se implementó Identity Server para manejar la autencicación del cliente MVC
+  - Se implementó Identity Server para manejar la autenticación del cliente MVC
   - Las funciones se ingresan automaticamente, cuando el usuario selecciona los detalles de la pelicula
  - Todas las funciones tienen el mismo precio y cantidad de asientos, esto puede ser configurado en el appSettings.Json de CinemasTheBESTia.CinemaBooking.API
 ```sh
