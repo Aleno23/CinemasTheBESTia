@@ -69,6 +69,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7- Test", "7- Test", "{9672
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration Test", "Integration Test", "{597BEFC9-7F9B-4333-89BE-51AB816345F3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "8- Diagrams", "8- Diagrams", "{54ADB5EA-9322-46ED-A2AA-8699E4DEDF4E}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\avelez\Downloads\Diagrama Cinemas The BESTia.png = C:\Users\avelez\Downloads\Diagrama Cinemas The BESTia.png
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
