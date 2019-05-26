@@ -32,4 +32,5 @@ Reemplazando {server}, {user} y password.
  
   - El cinema ofrece funciones todos los dias a las 3 ,  6  y 9 pm
   - No se implementó seguridad para consumir las API's 
+  - Se utilizó la librería Polly para el manejo de los reintentos y fallback
 
