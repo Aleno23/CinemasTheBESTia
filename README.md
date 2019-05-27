@@ -3,7 +3,7 @@
 
 ### Configuración requerida
 
-Para la ejecución de l solución se debe configurar las cadenas de conexión en dos proyectos.
+Para la ejecución de la solución se deben configurar las cadenas de conexión en dos proyectos.
 
 #####  - CinemasTheBESTia.CinemaBooking.API
 #####  - CinemasTheBESTia.IdentityServer
