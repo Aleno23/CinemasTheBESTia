@@ -9,13 +9,13 @@ Para la ejecución de la solución se deben configurar las cadenas de conexión 
 #####  - CinemasTheBESTia.IdentityServer
 
 
-En la raiz de ambos proyectos existe el archivo 'appsettings.json', en este se deben ingresar los datos para la creación de las bases de datos
+En la raiz de ambos proyectos existe el archivo 'appsettings.json', en este se deben ingresar los datos de conexión a SQL Server para la creación de las bases de datos. (esta creación se realiza automaticamente al iniciar la aplicación)
 
 ```sh
 "DefaultConnection": "{server};Database=BookingBD; Trusted_Connection=True;MultipleActiveResultSets=true; User Id={user}; Password={password}"
 ```
 
-Reemplazando {server}, {user} y password.
+Reemplazando {server}, {user} y {password}.
 
 ### Consideraciones
 
@@ -33,4 +33,4 @@ Reemplazando {server}, {user} y password.
   - El cinema ofrece funciones todos los dias a las 3 ,  6  y 9 pm
   - No se implementó seguridad para consumir las API's 
   - Se utilizó la librería Polly para el manejo de los reintentos y fallback
-
+  - La solución contiene multiples proyectos de inicio, pero con el que se debe interactuar es: CinemasTheBESTia.Web.MVC https://localhost:44386/
