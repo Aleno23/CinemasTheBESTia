@@ -14,97 +14,98 @@
 <div>
     <form method="post" class="container">
         <br />
-        <dl class="dl-horizontal clearfix">
-            <dt>
-                <label asp-for="Movie.OriginalTitle"></label>
-            </dt>
-            <dt>
-                <label asp-for="Movie.VoteAverage"></label>
-            </dt>
-            <dd>
-                @Model.Movie.VoteAverage
-            </dd>
-
-            <dd>
-                @Model.Movie.OriginalTitle
-            </dd>
-            <dt>
-                <label asp-for="Movie.OriginalLanguage"></label>
-            </dt>
-            <dd>
-                @Model.Movie.OriginalLanguage
-            </dd>
-            <dt>
-                <label asp-for="Movie.Overview"></label>
-            </dt>
-            <dd>
-                @Model.Movie.Overview
-            </dd>
-            <dt>
-                <label asp-for="Movie.ReleaseDate"></label>
-            </dt>
-            <dd>
-                @Model.Movie.ReleaseDate
-            </dd>
-            <dt>
-                <label asp-for="Movie.PosterPath"></label>
-            </dt>
-            <dd>
-                <img class=" img" src="@Url.Content(Model.Movie.FullPosterPath)" />
-            </dd>
-        </dl>
-
-        <div class="clearfix"></div>
         <div class="row">
-            <div class="col-md-6">
-
-                <table class="table table-sm table-bordered table-hover">
-                    <thead>
-                        <tr>
-
-                            <th>FunctionDateTime</th>
-                            <th>AvailableSeats</th>
-                            <th>Number of tickets</th>
-                        </tr>
-
-                    </thead>
-                    <tbody>
-                        @foreach (var cinemaFunction in Model.CinemaFunctions)
-                        {
-                            bool disponibility = cinemaFunction.AvailableSeats > 0;
-
-                            <tr class="@(disponibility ? "success": "danger" )">
-                                <td>@cinemaFunction.FunctionDateTime</td>
-                                <td>@cinemaFunction.AvailableSeats</td>
-
-                                @if (cinemaFunction.AvailableSeats > 0)
-                                {
-                                    <td>
-                                        <a asp-action="Index" asp-controller="Booking"
-                                           asp-route-movieId="@Model.Movie.Id"
-                                           asp-route-cinemaFunctionId="@cinemaFunction.CinemaFuctionId">
-                                            Buy Tickets
-                                        </a>
-
-                                    </td>
-                                }
-                                else
-                                {
-                                    <td>Out of sale</td>
-                                }
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+            <div class="col-md-3">
+                <img class=" img" src="@Url.Content(Model.Movie.FullPosterPath)" />
             </div>
+            <div class="col-md-9">
 
+                <div class="row">
+                    <div class="col-md-3">
+
+                        <label asp-for="Movie.OriginalTitle"></label>
+
+                    </div>
+                    <div class="col-md-6">
+                        @Model.Movie.OriginalTitle
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="Movie.VoteAverage"></label>
+                    </div>
+                    <div class="col-md-6">
+                        @Model.Movie.VoteAverage
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="Movie.OriginalLanguage"></label>
+                    </div>
+                    <div class="col-md-6">
+                        @Model.Movie.OriginalLanguage
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="Movie.Overview"></label>
+                    </div>
+                    <div class="col-md-6">
+                        @Model.Movie.Overview
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-3">
+                        <label asp-for="Movie.ReleaseDate"></label>
+                    </div>
+                    <div class="col-md-6">
+                        @Model.Movie.ReleaseDate
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix">&nbsp;</div>
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading ">Showtimes</div>
+            <div class="panel-body">
+               
+                @foreach (var cinemaFunction in Model.CinemaFunctions)
+                {
+
+                    <div class="btn-group" role="group" aria-label="...">
+                        @if (cinemaFunction.AvailableSeats > 0)
+                        {
+
+                            <a class="btn btn-default" asp-action="Index" asp-controller="Booking"
+                               asp-route-movieId="@Model.Movie.Id"
+                               asp-route-cinemaFunctionId="@cinemaFunction.CinemaFuctionId">
+
+                                @cinemaFunction.FunctionDateTime
+                                <label class="text-success">@cinemaFunction.AvailableSeats Tickets</label>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-danger">
+                                @cinemaFunction.FunctionDateTime
+                                0 Tickets
+                            </a>
+                        }
+                        <div class="clearfix">&nbsp;</div>
+                    </div>
+                }
+
+            </div>
         </div>
     </form>
-
 </div>
-
-
 <div>
-
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index"><i class="glyphicon glyphicon-home"></i> Back to List</a>
+    
 </div>

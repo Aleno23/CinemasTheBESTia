@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<CinemasTheBESTia.Entities.CinemaFunctions.CinemaReservation>
 
 
-<h2>Movies</h2>
+<h2>User bookings</h2>
 
 
 @if (!Model.Any())
@@ -14,10 +14,10 @@ else
         <thead>
             <tr>
                 <th></th>
-                <th>OriginalMovieTitle</th>
-                <th>FunctionDateTime</th>
-                <th>TotalPaid</th>
-                <th>TotalTickets</th>
+                <th>Original Movie Title</th>
+                <th>Function DateTime</th>
+                <th>Total Paid</th>
+                <th>Total Tickets</th>
 
             </tr>
 
@@ -26,11 +26,15 @@ else
             @foreach (var booking in Model)
             {
             <tr>
-                <td> <a asp-action="Details" asp-controller="UserBooking" asp-route-id="@booking.Id">Cancel</a> </td>
+                
+                <td> 
+                    <a asp-action="Details" asp-controller="UserBooking" asp-route-id="@booking.Id">Cancel</a> 
+                    <i class="glyphicon glyphicon-remove"></i>
+                </td>
 
                 <td>@booking.OriginalMovieTitle</td>
                 <td>@booking.CinemaFunction.FunctionDateTime</td>
-                <td>@booking.TotalPaid</td>
+                <td> @String.Format("{0:C0}", Convert.ToInt32(booking.TotalPaid))</td>
                 <td>@booking.TotalTickets</td>
             </tr>
             }

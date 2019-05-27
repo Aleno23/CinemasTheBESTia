@@ -80,7 +80,7 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
 
                     switch (result.MessageCode)
                     {
-                        case 1: return RedirectToAction("Index", "Movies");
+                        case 1: return View("PaymentSuccesfully");
                         case -1:
                             ModelState.AddModelError("Error", "There are not seats available");
                             reserverViewModel.AvailableSeats = result.AvailableSeats;
