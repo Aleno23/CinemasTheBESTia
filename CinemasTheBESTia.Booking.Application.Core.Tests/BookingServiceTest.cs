@@ -1,6 +1,7 @@
 ﻿using CinemasTheBESTia.Booking.Data.Context;
 using CinemasTheBESTia.Bookings.Application.Core;
 using CinemasTheBESTia.Entities.CinemaFunctions;
+using CinemasTheBESTia.Entities.DTOs;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
