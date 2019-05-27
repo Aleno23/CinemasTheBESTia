@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Entities.CinemaFunctions;
 using CinemasTheBESTia.Entities.Movies;
 using CinemasTheBESTia.Utilities.Abstractions.Interfaces;
+using CinemasTheBESTia.Web.MVC.Models;
 using CinemasTheBESTia.Web.MVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -34,12 +36,12 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
             {
                 var movies = await _apiClient.GetAsync<IEnumerable<Movie>>(new Uri(_configuration["Movies:BaseUrl"]));
                 viewModel.Movies = movies;
+                return View(viewModel);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            return View(viewModel);
         }
 
 
@@ -47,9 +49,16 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
         [HttpGet]
         public async Task<ActionResult> Details(int id)
         {
-            Movie movie = await GetMovie(id);
-            IEnumerable<CinemaFunction> functions = await GetFunctions(movie.Id);
-            return View(new MovieDetailViewModel() { Movie = movie, CinemaFunctions = functions });
+            try
+            {
+                Movie movie = await GetMovie(id);
+                IEnumerable<CinemaFunction> functions = await GetFunctions(movie.Id);
+                return View(new MovieDetailViewModel() { Movie = movie, CinemaFunctions = functions });
+            }
+            catch (Exception)
+            {
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            }
         }
 
         private async Task<Movie> GetMovie(int id)
@@ -66,36 +75,22 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> GetSeats(MovieDetailViewModel movieDetailViewModel)
         {
-            var seats = await _apiClient.GetAsync<int>(new Uri($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodSeats"]}{movieDetailViewModel.CinemaFunctionID}"));
-            var functions = await _apiClient.GetAsync<IEnumerable<CinemaFunction>>(new Uri($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodFunctions"]}{movieDetailViewModel.Movie.Id}"));
-            var movie = await _apiClient.GetAsync<Movie>(new Uri($"{_configuration["Movies:BaseUrl"]}{movieDetailViewModel.Movie.Id}"));
-            var model = new MovieDetailViewModel() { Movie = movie, CinemaFunctions = functions, AvailableSeats = seats, CinemaFunctionID = movieDetailViewModel.CinemaFunctionID };
-            model.AvailableSeats = seats;
-            return View("Details", model);
+            try
+            {
+                var seats = await _apiClient.GetAsync<int>(new Uri($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodSeats"]}{movieDetailViewModel.CinemaFunctionID}"));
+                var functions = await _apiClient.GetAsync<IEnumerable<CinemaFunction>>(new Uri($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodFunctions"]}{movieDetailViewModel.Movie.Id}"));
+                var movie = await _apiClient.GetAsync<Movie>(new Uri($"{_configuration["Movies:BaseUrl"]}{movieDetailViewModel.Movie.Id}"));
+                var model = new MovieDetailViewModel() { Movie = movie, CinemaFunctions = functions, AvailableSeats = seats, CinemaFunctionID = movieDetailViewModel.CinemaFunctionID };
+                model.AvailableSeats = seats;
+                return View("Details", model);
+            }
+            catch (Exception)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                });
+            }
         }
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> CheckSeats(MovieDetailViewModel movieDetailViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        var seats = await _apiClient.GetAsync<int>(new Uri($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodSeats"]}{movieDetailViewModel.CinemaFunctionID}"));
-        //        movieDetailViewModel.AvailableSeats = seats;
-        //        return RedirectToAction("Index", "Booking", new
-        //        {
-        //            @functionId = movieDetailViewModel.CinemaFunctionID,
-        //            @movieId = movieDetailViewModel.Movie.Id,
-        //            @movieTitle = movieDetailViewModel.Movie.OriginalTitle,
-        //            @voteAverage = movieDetailViewModel.Movie.VoteAverage
-        //        });
-
-        //    }
-
-
-        //    return View("Details", new { id = movieDetailViewModel.Movie.Id });
-
-        //}
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using CinemasTheBESTia.Entities.CinemaFunctions;
 using CinemasTheBESTia.Entities.DTOs;
@@ -14,7 +15,6 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
     [Authorize]
     public class UserBookingController : Controller
     {
-
         private readonly IAPIClient _apiClient;
         private readonly IConfiguration _configuration;
 
@@ -32,12 +32,13 @@ namespace CinemasTheBESTia.Web.MVC.Controllers
             {
                 bookings = await _apiClient.GetAsync<IEnumerable<CinemaReservation>>
                     (new Uri($"{_configuration["Booking:BaseUrl"]}{_configuration["Booking:MethodBooking"]}{User.FindFirst(x => x.Type == "sub").Value}"));
+                return View(bookings);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                return View("Error", new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
             }
-            return View(bookings);
+
         }
 
         // GET: UserBooking/Details/5
