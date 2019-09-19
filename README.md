@@ -1,6 +1,8 @@
 
 # Cinemas The BESTia -Alex Edwin Velez
 
+[![Build Status](https://dev.azure.com/aevelez/Cinemas%20The%20Bestia/_apis/build/status/Aleno23.CinemasTheBESTia?branchName=master-dev)](https://dev.azure.com/aevelez/Cinemas%20The%20Bestia/_build/latest?definitionId=2&branchName=master-dev)
+
 ### Configuración requerida
 
 Para la ejecución de la solución se deben configurar las cadenas de conexión en dos proyectos.
